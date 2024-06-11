@@ -40,9 +40,9 @@ class _PaymentCollectorPageState extends State<PaymentCollectorPage> {
                   child: Center(
                     child: SvgPicture.asset(
                       "assets/svg/Arrow_right.svg",
-                      width: 30,
+                      width: 24,
                       color: hijaumuda,
-                      height: 30,
+                      height: 24,
                     ),
                   ),
                 ),

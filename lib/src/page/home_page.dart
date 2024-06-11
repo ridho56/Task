@@ -37,8 +37,8 @@ class _HomePageState extends State<HomePage> {
           onTap: ontap,
           child: Container(
             padding: const EdgeInsets.only(
-              top: 25,
-              bottom: 25,
+              top: 20,
+              bottom: 20,
               right: 20,
               left: 20,
             ),
@@ -54,30 +54,35 @@ class _HomePageState extends State<HomePage> {
               children: [
                 SvgPicture.asset(
                   image,
-                  height: 112,
-                  width: 112,
+                  height: 93,
+                  width: 93,
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                Row(
                   children: [
-                    Text(
-                      text1,
-                      style: TextStyle(
-                        fontFamily: 'KumbhSans',
-                        fontSize: 21,
-                        color: colors,
-                        fontWeight: FontWeight.w600,
-                      ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          text1,
+                          style: TextStyle(
+                            fontFamily: 'KumbhSans',
+                            fontSize: 21,
+                            color: colors,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        Text(
+                          text2,
+                          style: TextStyle(
+                            fontFamily: 'KumbhSans',
+                            fontSize: 8,
+                            color: colors,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          textAlign: TextAlign.left,
+                        )
+                      ],
                     ),
-                    Text(
-                      text2,
-                      style: TextStyle(
-                        fontFamily: 'KumbhSans',
-                        fontSize: 8,
-                        color: colors,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    )
                   ],
                 ),
                 Container(
@@ -87,7 +92,8 @@ class _HomePageState extends State<HomePage> {
                   ),
                   child: SvgPicture.asset(
                     "assets/svg/Arrow_left.svg",
-                    height: 45,
+                    height: 36,
+                    width: 36,
                   ),
                 )
               ],
@@ -149,7 +155,7 @@ class _HomePageState extends State<HomePage> {
               card(
                 "assets/svg/calender.svg",
                 "Pengingat\nPembayaran",
-                "Buat pengingat waktu pembayaran\nkamu contohnya\nlistrik, Air, dll",
+                "Buat pengingat waktu pembayaran\nkamu contohnya listrik, Air, dll",
                 hijaumuda,
                 () {
                   Navigator.push(

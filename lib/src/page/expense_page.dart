@@ -40,8 +40,8 @@ class _ExpensePageState extends State<ExpensePage> {
                   child: Center(
                     child: SvgPicture.asset(
                       "assets/svg/Arrow_right.svg",
-                      width: 30,
-                      height: 30,
+                      width: 24,
+                      height: 24,
                     ),
                   ),
                 ),

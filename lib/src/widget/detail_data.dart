@@ -8,7 +8,11 @@ class DetailBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 47, vertical: 12),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 47,
+        // vertical: 12,
+      ),
+      height: MediaQuery.of(context).size.height * 0.55,
       decoration: const BoxDecoration(
         borderRadius: BorderRadius.vertical(
           top: Radius.circular(22),
