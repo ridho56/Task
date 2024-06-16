@@ -42,6 +42,9 @@ class _ExpensePageState extends State<ExpensePage> {
                       "assets/svg/Arrow_right.svg",
                       width: 24,
                       height: 24,
+                      theme: const SvgTheme(
+                        currentColor: kuning,
+                      ),
                     ),
                   ),
                 ),

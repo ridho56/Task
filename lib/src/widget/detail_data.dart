@@ -8,11 +8,11 @@ class DetailBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(
+      margin: const EdgeInsets.symmetric(
         horizontal: 47,
         // vertical: 12,
       ),
-      height: MediaQuery.of(context).size.height * 0.55,
+      height: MediaQuery.of(context).size.height * 0.5,
       decoration: const BoxDecoration(
         borderRadius: BorderRadius.vertical(
           top: Radius.circular(22),
@@ -117,9 +117,9 @@ class DetailBottomSheet extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(
-            height: 24,
-          ),
+          // const SizedBox(
+          //   height: 24,
+          // ),
         ],
       ),
     );
