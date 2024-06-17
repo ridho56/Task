@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:task/src/page/home_page.dart';
+import 'package:intl/date_symbol_data_local.dart'; // Import initializeDateFormatting
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+  await initializeDateFormatting('id_ID', null);
+
   runApp(const MyApp());
 }
 

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:task/src/widget/detail_data.dart';
+import 'package:task/src/widget/form_add.dart';
 import 'package:task/theme.dart';
 
 class PaymentCollectorPage extends StatefulWidget {
@@ -11,6 +13,20 @@ class PaymentCollectorPage extends StatefulWidget {
 }
 
 class _PaymentCollectorPageState extends State<PaymentCollectorPage> {
+  Box<List>? box;
+
+  @override
+  void initState() {
+    super.initState();
+    _openBox();
+  }
+
+  Future<void> _openBox() async {
+    // Open the Box
+    box = await Hive.openBox<List>('jsonArrayTask');
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     Widget contenttop() {
@@ -162,7 +178,16 @@ class _PaymentCollectorPageState extends State<PaymentCollectorPage> {
               ),
             ),
             TextButton(
-              onPressed: () {},
+              onPressed: () {
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  backgroundColor: Colors.transparent,
+                  builder: (BuildContext context) {
+                    return const FormAdd();
+                  },
+                );
+              },
               style: TextButton.styleFrom(
                   backgroundColor: hijaumuda,
                   foregroundColor: hijaumuda.withOpacity(0.5),
@@ -187,84 +212,91 @@ class _PaymentCollectorPageState extends State<PaymentCollectorPage> {
     }
 
     Widget contentboottom() {
-      return Expanded(
-        child: Padding(
-          padding: const EdgeInsets.only(
-            top: 27,
-            left: 22,
-            right: 32,
-          ),
-          child: ListView.builder(
-            itemCount: 10,
-            itemBuilder: (context, index) {
-              final color = getColorByIndex(index);
-              return GestureDetector(
-                onTap: () {
-                  showModalBottomSheet(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return const DetailBottomSheet();
-                    },
-                  );
-                },
-                child: Container(
-                  margin: const EdgeInsets.only(bottom: 11),
-                  padding: const EdgeInsets.only(
-                      left: 12, top: 10, bottom: 10, right: 28),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(27),
-                    color: color,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Row(
-                        children: [
-                          SvgPicture.asset("assets/svg/Data.svg"),
-                          RichText(
-                            text: const TextSpan(
-                              children: <TextSpan>[
-                                TextSpan(
-                                  text: "Paket Data\n",
-                                  style: TextStyle(
-                                    color: abuabu,
-                                    fontFamily: 'KumbhSans',
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w500,
+      if (box == null) {
+        return const CircularProgressIndicator();
+      } else {
+        var dataList =
+            box!.get('dataList')?.cast<Map<dynamic, dynamic>>() ?? [];
+        return Expanded(
+          child: Padding(
+            padding: const EdgeInsets.only(
+              top: 27,
+              left: 22,
+              right: 32,
+            ),
+            child: ListView.builder(
+              itemCount: dataList.length,
+              itemBuilder: (context, index) {
+                var data = dataList[index];
+                final color = getColorByIndex(index);
+                return GestureDetector(
+                  onTap: () {
+                    showModalBottomSheet(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return const DetailBottomSheet();
+                      },
+                    );
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.only(bottom: 11),
+                    padding: const EdgeInsets.only(
+                        left: 12, top: 10, bottom: 10, right: 28),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(27),
+                      color: color,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Row(
+                          children: [
+                            SvgPicture.asset("assets/svg/Data.svg"),
+                            RichText(
+                              text: TextSpan(
+                                children: <TextSpan>[
+                                  TextSpan(
+                                    text: "${data['name']}\n",
+                                    style: const TextStyle(
+                                      color: abuabu,
+                                      fontFamily: 'KumbhSans',
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w500,
+                                    ),
                                   ),
-                                ),
-                                TextSpan(
-                                  text: "19 November 2023",
-                                  style: TextStyle(
-                                    color: abuabu,
-                                    fontFamily: 'KumbhSans',
-                                    fontSize: 9,
-                                    fontWeight: FontWeight.w300,
+                                  TextSpan(
+                                    text: data['date'],
+                                    style: const TextStyle(
+                                      color: abuabu,
+                                      fontFamily: 'KumbhSans',
+                                      fontSize: 9,
+                                      fontWeight: FontWeight.w300,
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                      const Text(
-                        "Rp 75.000",
-                        style: TextStyle(
-                          color: abuabu,
-                          fontFamily: 'KumbhSans',
-                          fontSize: 13,
-                          fontWeight: FontWeight.w700,
+                          ],
                         ),
-                      )
-                    ],
+                        Text(
+                          "Rp ${data['nominal']}",
+                          style: const TextStyle(
+                            color: abuabu,
+                            fontFamily: 'KumbhSans',
+                            fontSize: 13,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        )
+                      ],
+                    ),
                   ),
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
-        ),
-      );
+        );
+      }
     }
 
     return SafeArea(
