@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:task/src/controller/add_controller.dart';
-import 'package:task/src/page/payment_collector_page.dart';
 import 'package:task/theme.dart'; // Assuming you're using this
 import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
