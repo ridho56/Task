@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:task/src/page/home_page.dart';
-import 'package:intl/date_symbol_data_local.dart'; // Import initializeDateFormatting
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:task/theme.dart'; // Import initializeDateFormatting
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,7 +26,14 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const HomePage(),
+      home: const AnnotatedRegion<SystemUiOverlayStyle>(
+        value: SystemUiOverlayStyle(
+          statusBarColor: putih,
+          statusBarIconBrightness: Brightness.dark,
+          statusBarBrightness: Brightness.light,
+        ),
+        child: HomePage(),
+      ),
     );
   }
 }

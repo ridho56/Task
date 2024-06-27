@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:task/src/controller/add_controller.dart';
 import 'package:task/src/widget/detail_data.dart';
 import 'package:task/src/widget/form_add.dart';
 import 'package:task/theme.dart';
@@ -14,16 +15,12 @@ class PaymentCollectorPage extends StatefulWidget {
 
 class _PaymentCollectorPageState extends State<PaymentCollectorPage> {
   Box<List>? box;
+  final AddController addController = AddController();
 
   @override
   void initState() {
     super.initState();
-    _openBox();
-  }
-
-  Future<void> _openBox() async {
-    // Open the Box
-    box = await Hive.openBox<List>('jsonArrayTask');
+    addController.openBox();
     setState(() {});
   }
 
@@ -212,93 +209,108 @@ class _PaymentCollectorPageState extends State<PaymentCollectorPage> {
     }
 
     Widget contentboottom() {
-      if (box == null) {
-        return const CircularProgressIndicator();
-      } else {
-        var dataList =
-            box!.get('dataList')?.cast<Map<dynamic, dynamic>>() ?? [];
-        return Expanded(
-          child: Padding(
-            padding: const EdgeInsets.only(
-              top: 27,
-              left: 22,
-              right: 32,
-            ),
-            child: ListView.builder(
-              itemCount: dataList.length,
-              itemBuilder: (context, index) {
-                var data = dataList[index];
-                final color = getColorByIndex(index);
-                return GestureDetector(
-                  onTap: () {
-                    showModalBottomSheet(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return const DetailBottomSheet();
-                      },
-                    );
-                  },
-                  child: Container(
-                    margin: const EdgeInsets.only(bottom: 11),
-                    padding: const EdgeInsets.only(
-                        left: 12, top: 10, bottom: 10, right: 28),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(27),
-                      color: color,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Row(
-                          children: [
-                            SvgPicture.asset("assets/svg/Data.svg"),
-                            RichText(
-                              text: TextSpan(
-                                children: <TextSpan>[
-                                  TextSpan(
-                                    text: "${data['name']}\n",
-                                    style: const TextStyle(
-                                      color: abuabu,
-                                      fontFamily: 'KumbhSans',
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                  TextSpan(
-                                    text: data['date'],
-                                    style: const TextStyle(
-                                      color: abuabu,
-                                      fontFamily: 'KumbhSans',
-                                      fontSize: 9,
-                                      fontWeight: FontWeight.w300,
+      return Expanded(
+        child: FutureBuilder(
+            future: addController.getDataList(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError ||
+                  snapshot.data!.isEmpty ||
+                  snapshot.data == null) {
+                return Center(child: Text('Error: ${snapshot.error}'));
+              } else {
+                List<Map<String, dynamic>> dataList = snapshot.data!;
+
+                return Padding(
+                  padding: const EdgeInsets.only(
+                    top: 27,
+                    left: 22,
+                    right: 32,
+                  ),
+                  child: ListView.builder(
+                    itemCount: dataList.length,
+                    itemBuilder: (context, index) {
+                      var data = dataList[index];
+                      final color = getColorByIndex(index);
+                      return GestureDetector(
+                        onTap: () {
+                          showModalBottomSheet(
+                            context: context,
+                            isScrollControlled: true,
+                            builder: (BuildContext context) {
+                              return const DetailBottomSheet();
+                            },
+                          );
+                        },
+                        child: Container(
+                          margin: const EdgeInsets.only(bottom: 11),
+                          padding: const EdgeInsets.only(
+                              left: 12, top: 10, bottom: 10, right: 28),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(27),
+                            color: color,
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Row(
+                                children: [
+                                  SvgPicture.asset("assets/svg/Data.svg"),
+                                  RichText(
+                                    text: TextSpan(
+                                      children: <TextSpan>[
+                                        TextSpan(
+                                          text: "${data['name']}\n",
+                                          style: const TextStyle(
+                                            color: abuabu,
+                                            fontFamily: 'KumbhSans',
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                        TextSpan(
+                                          text: data['date'],
+                                          style: const TextStyle(
+                                            color: abuabu,
+                                            fontFamily: 'KumbhSans',
+                                            fontSize: 9,
+                                            fontWeight: FontWeight.w300,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ],
                               ),
-                            ),
-                          ],
-                        ),
-                        Text(
-                          "Rp ${data['nominal']}",
-                          style: const TextStyle(
-                            color: abuabu,
-                            fontFamily: 'KumbhSans',
-                            fontSize: 13,
-                            fontWeight: FontWeight.w700,
+                              Text(
+                                "Rp ${data['nominal']}",
+                                style: const TextStyle(
+                                  color: abuabu,
+                                  fontFamily: 'KumbhSans',
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              )
+                            ],
                           ),
-                        )
-                      ],
-                    ),
+                        ),
+                      );
+                    },
                   ),
                 );
-              },
-            ),
-          ),
-        );
-      }
+              }
+            }),
+      );
     }
 
+    // SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    //   statusBarColor: putih, // Atur warna latar belakang status bar
+    //   statusBarIconBrightness:
+    //       Brightness.dark, // Atur warna ikon status bar (light/dark)
+    //   statusBarBrightness: Brightness.light, // Atur kecerahan status bar
+    // ));
     return SafeArea(
       child: Scaffold(
         backgroundColor: putih,

@@ -10,7 +10,7 @@ class DetailBottomSheet extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.symmetric(
         horizontal: 47,
-        // vertical: 12,
+        vertical: 12,
       ),
       height: MediaQuery.of(context).size.height * 0.5,
       decoration: const BoxDecoration(
@@ -117,9 +117,6 @@ class DetailBottomSheet extends StatelessWidget {
               ),
             ),
           ),
-          // const SizedBox(
-          //   height: 24,
-          // ),
         ],
       ),
     );
