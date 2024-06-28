@@ -210,107 +210,96 @@ class _PaymentCollectorPageState extends State<PaymentCollectorPage> {
 
     Widget contentboottom() {
       return Expanded(
-        child: FutureBuilder(
-            future: addController.getDataList(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
-              } else if (snapshot.hasError ||
-                  snapshot.data!.isEmpty ||
-                  snapshot.data == null) {
-                return Center(child: Text('Error: ${snapshot.error}'));
-              } else {
-                List<Map<String, dynamic>> dataList = snapshot.data!;
-
-                return Padding(
-                  padding: const EdgeInsets.only(
-                    top: 27,
-                    left: 22,
-                    right: 32,
-                  ),
-                  child: ListView.builder(
-                    itemCount: dataList.length,
-                    itemBuilder: (context, index) {
-                      var data = dataList[index];
-                      final color = getColorByIndex(index);
-                      return GestureDetector(
-                        onTap: () {
-                          showModalBottomSheet(
-                            context: context,
-                            isScrollControlled: true,
-                            builder: (BuildContext context) {
-                              return const DetailBottomSheet();
-                            },
-                          );
-                        },
-                        child: Container(
-                          margin: const EdgeInsets.only(bottom: 11),
-                          padding: const EdgeInsets.only(
-                              left: 12, top: 10, bottom: 10, right: 28),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(27),
-                            color: color,
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Row(
-                                children: [
-                                  SvgPicture.asset("assets/svg/Data.svg"),
-                                  RichText(
-                                    text: TextSpan(
-                                      children: <TextSpan>[
-                                        TextSpan(
-                                          text: "${data['name']}\n",
-                                          style: const TextStyle(
-                                            color: abuabu,
-                                            fontFamily: 'KumbhSans',
-                                            fontSize: 13,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                        TextSpan(
-                                          text: data['date'],
-                                          style: const TextStyle(
-                                            color: abuabu,
-                                            fontFamily: 'KumbhSans',
-                                            fontSize: 9,
-                                            fontWeight: FontWeight.w300,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Text(
-                                "Rp ${data['nominal']}",
-                                style: const TextStyle(
-                                  color: abuabu,
-                                  fontFamily: 'KumbhSans',
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              )
-                            ],
-                          ),
+        child: ValueListenableBuilder<List<Map<String, dynamic>>>(
+          valueListenable: addController.dataListNotifier,
+          builder: (context, dataList, _) {
+            if (dataList.isEmpty) {
+              return const Center(child: Text('No data available'));
+            } else {
+              return Padding(
+                padding: const EdgeInsets.only(
+                  top: 27,
+                  left: 22,
+                  right: 32,
+                ),
+                child: ListView.builder(
+                  itemCount: dataList.length,
+                  itemBuilder: (context, index) {
+                    var data = dataList[index];
+                    final color = getColorByIndex(index);
+                    return GestureDetector(
+                      onTap: () {
+                        showModalBottomSheet(
+                          context: context,
+                          isScrollControlled: true,
+                          builder: (BuildContext context) {
+                            return const DetailBottomSheet();
+                          },
+                        );
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.only(bottom: 11),
+                        padding: const EdgeInsets.only(
+                            left: 12, top: 10, bottom: 10, right: 28),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(27),
+                          color: color,
                         ),
-                      );
-                    },
-                  ),
-                );
-              }
-            }),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Row(
+                              children: [
+                                SvgPicture.asset("assets/svg/Data.svg"),
+                                RichText(
+                                  text: TextSpan(
+                                    children: <TextSpan>[
+                                      TextSpan(
+                                        text: "${data['name']}\n",
+                                        style: const TextStyle(
+                                          color: abuabu,
+                                          fontFamily: 'KumbhSans',
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                      TextSpan(
+                                        text: data['date'],
+                                        style: const TextStyle(
+                                          color: abuabu,
+                                          fontFamily: 'KumbhSans',
+                                          fontSize: 9,
+                                          fontWeight: FontWeight.w300,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Text(
+                              "Rp ${data['nominal']}",
+                              style: const TextStyle(
+                                color: abuabu,
+                                fontFamily: 'KumbhSans',
+                                fontSize: 13,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              );
+            }
+          },
+        ),
       );
     }
 
-    // SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    //   statusBarColor: putih, // Atur warna latar belakang status bar
-    //   statusBarIconBrightness:
-    //       Brightness.dark, // Atur warna ikon status bar (light/dark)
-    //   statusBarBrightness: Brightness.light, // Atur kecerahan status bar
-    // ));
     return SafeArea(
       child: Scaffold(
         backgroundColor: putih,

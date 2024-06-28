@@ -290,8 +290,7 @@ class _FormAddState extends State<FormAdd> {
       await addController
           .addDataPayment(newData)
           .whenComplete(() => Navigator.pop(context));
-
-      setState(() {});
+      return;
     }
   }
 }

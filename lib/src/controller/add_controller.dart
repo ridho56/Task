@@ -1,26 +1,38 @@
+import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class AddController {
   Box<List>? box;
+  ValueNotifier<List<Map<String, dynamic>>> dataListNotifier =
+      ValueNotifier([]);
 
   Future<void> openBox() async {
     // Open the Box
     box = await Hive.openBox<List>('jsonArrayPayment');
+    // Load initial data
+    loadDataList();
+  }
+
+  void loadDataList() {
+    List<dynamic>? rawList = box!.get('dataList');
+    List<Map<String, dynamic>> dataArray = rawList?.map((item) {
+          return Map<String, dynamic>.from(item as Map);
+        }).toList() ??
+        [];
+    dataListNotifier.value = dataArray;
   }
 
   Future<void> addDataPayment(Map<String, dynamic> newData) async {
-    List<Map<String, dynamic>>? dataArray =
-        box!.get('dataList')?.cast<Map<String, dynamic>>();
-
-    dataArray ??= [];
-
+    List<dynamic>? rawList = box!.get('dataList');
+    List<Map<String, dynamic>> dataArray = rawList?.map((item) {
+          return Map<String, dynamic>.from(item as Map);
+        }).toList() ??
+        [];
     dataArray.add(newData);
 
     await box!.put('dataList', dataArray);
-  }
 
-  Future<List<Map<String, dynamic>>> getDataList() async {
-    await openBox(); // Ensure the box is opened before accessing data
-    return box!.get('dataList')?.cast<Map<String, dynamic>>() ?? [];
+    // Update the ValueNotifier
+    dataListNotifier.value = dataArray;
   }
 }
