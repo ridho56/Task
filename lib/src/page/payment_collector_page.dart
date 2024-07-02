@@ -181,7 +181,9 @@ class _PaymentCollectorPageState extends State<PaymentCollectorPage> {
                   isScrollControlled: true,
                   backgroundColor: Colors.transparent,
                   builder: (BuildContext context) {
-                    return const FormAdd();
+                    return FormAdd(
+                      addController: addController,
+                    );
                   },
                 );
               },

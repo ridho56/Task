@@ -7,7 +7,8 @@ import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
 class FormAdd extends StatefulWidget {
-  const FormAdd({super.key});
+  final AddController addController;
+  const FormAdd({super.key, required this.addController});
 
   @override
   State<FormAdd> createState() => _FormAddState();
@@ -22,12 +23,13 @@ class _FormAddState extends State<FormAdd> {
   final _formKey = GlobalKey<FormState>();
   var uuid = const Uuid();
 
-  final AddController addController = AddController();
-
   @override
-  void initState() {
-    super.initState();
-    addController.openBox();
+  void dispose() {
+    nameController.dispose();
+    dateController.dispose();
+    descriptionController.dispose();
+    nominalController.dispose();
+    super.dispose();
   }
 
   @override
@@ -40,219 +42,211 @@ class _FormAddState extends State<FormAdd> {
       statusBarBrightness: Brightness.dark, // Atur kecerahan status bar
     ));
     return DraggableScrollableSheet(
-      initialChildSize: 0.5,
-      expand: true,
+      minChildSize: 0.3,
+      maxChildSize: 0.9,
+      expand: false,
       builder: (BuildContext context, ScrollController scrollController) {
-        return SingleChildScrollView(
-          controller: scrollController,
-          child: Container(
-            height: MediaQuery.of(context).size.height,
-            padding: const EdgeInsets.all(20.0),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(20.0),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Center(
-                //   child: Container(
-                //     margin: const EdgeInsets.only(bottom: 10, top: 20),
-                //     decoration: BoxDecoration(
-                //       borderRadius: BorderRadius.circular(2),
-                //       color: const Color(0xffEBEBEB),
-                //     ),
-                //     width: 80,
-                //     height: 4,
-                //   ),
-                // ),
-                AppBar(
-                  elevation: 0,
-                  backgroundColor: Colors.white,
-                  title: const Text(
-                    "Tambah Item",
-                    style: TextStyle(
-                      color: abuabu,
-                      fontFamily: 'KumbhSans',
-                      fontSize: 21,
-                      fontWeight: FontWeight.w400,
+        return Container(
+          padding: const EdgeInsets.all(20.0),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20.0),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: Container(
+                  margin: const EdgeInsets.only(bottom: 10),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(2),
+                    color: const Color(0xffEBEBEB),
+                  ),
+                  width: 80,
+                  height: 4,
+                ),
+              ),
+              AppBar(
+                elevation: 0,
+                backgroundColor: Colors.white,
+                title: const Text(
+                  "Tambah Item",
+                  style: TextStyle(
+                    color: abuabu,
+                    fontFamily: 'KumbhSans',
+                    fontSize: 21,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ), // More descriptive title
+                leading: GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: hijaumuda.withOpacity(0.2),
+                      shape: BoxShape.circle,
                     ),
-                  ), // More descriptive title
-                  leading: GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: hijaumuda.withOpacity(0.2),
-                        shape: BoxShape.circle,
-                      ),
-                      child: Center(
-                        child: SvgPicture.asset(
-                          "assets/svg/Arrow_right.svg",
-                          theme: const SvgTheme(
-                            currentColor: hijaumuda,
-                          ),
+                    child: Center(
+                      child: SvgPicture.asset(
+                        "assets/svg/Arrow_right.svg",
+                        theme: const SvgTheme(
+                          currentColor: hijaumuda,
                         ),
                       ),
                     ),
                   ),
-                  centerTitle: true,
                 ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Expanded(
-                  child: SingleChildScrollView(
-                    controller: scrollController,
-                    child: Form(
-                      key: _formKey,
-                      // Wrap the content in a Form widget
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text("Name:"), // Descriptive label
-                          TextFormField(
-                            controller: nameController,
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'Tidak boleh kosong';
-                              }
-                              return null;
-                            },
-                            decoration: InputDecoration(
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                                borderSide: const BorderSide(
-                                  color: hijaumuda,
-                                ),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                                borderSide: const BorderSide(
-                                  color: hijaumuda,
-                                ),
+                centerTitle: true,
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Expanded(
+                child: SingleChildScrollView(
+                  controller: scrollController,
+                  child: Form(
+                    key: _formKey,
+                    // Wrap the content in a Form widget
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text("Name:"), // Descriptive label
+                        TextFormField(
+                          controller: nameController,
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Tidak boleh kosong';
+                            }
+                            return null;
+                          },
+                          decoration: InputDecoration(
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: const BorderSide(
+                                color: hijaumuda,
                               ),
                             ),
-                            // Add validation and error handling (optional)
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: const BorderSide(
+                                color: hijaumuda,
+                              ),
+                            ),
                           ),
-                          const SizedBox(height: 10),
-                          const Text("Description:"),
-                          TextFormField(
-                            maxLines: 5,
-                            controller: descriptionController,
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'Tidak boleh kosong';
-                              }
-                              return null;
-                            },
-                            decoration: InputDecoration(
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                                borderSide: const BorderSide(
-                                  color: hijaumuda,
-                                ),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                                borderSide: const BorderSide(
-                                  color: hijaumuda,
-                                ),
+                          // Add validation and error handling (optional)
+                        ),
+                        const SizedBox(height: 10),
+                        const Text("Description:"),
+                        TextFormField(
+                          maxLines: 5,
+                          controller: descriptionController,
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Tidak boleh kosong';
+                            }
+                            return null;
+                          },
+                          decoration: InputDecoration(
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: const BorderSide(
+                                color: hijaumuda,
                               ),
                             ),
-                            // Add validation and error handling (optional)
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: const BorderSide(
+                                color: hijaumuda,
+                              ),
+                            ),
                           ),
-                          const Text("Nominal:"),
-                          TextFormField(
-                            controller: nominalController,
-                            keyboardType: TextInputType.number,
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'Tidak boleh kosong';
-                              }
-                              return null;
-                            },
-                            decoration: InputDecoration(
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                                borderSide: const BorderSide(
-                                  color: hijaumuda,
-                                ),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                                borderSide: const BorderSide(
-                                  color: hijaumuda,
-                                ),
+                          // Add validation and error handling (optional)
+                        ),
+                        const Text("Nominal:"),
+                        TextFormField(
+                          controller: nominalController,
+                          keyboardType: TextInputType.number,
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Tidak boleh kosong';
+                            }
+                            return null;
+                          },
+                          decoration: InputDecoration(
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: const BorderSide(
+                                color: hijaumuda,
                               ),
                             ),
-                            // Add validation and error handling (optional)
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: const BorderSide(
+                                color: hijaumuda,
+                              ),
+                            ),
                           ),
-                          const SizedBox(height: 10),
-                          const Text("Tanggal:"),
-                          TextFormField(
-                            readOnly: true,
-                            controller: dateController,
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'Tidak boleh kosong';
-                              }
-                              return null;
-                            },
-                            showCursor: true,
-                            decoration: InputDecoration(
-                              suffixIcon: IconButton(
-                                splashRadius: 20.0,
-                                icon: SvgPicture.asset(
-                                  'assets/svg/calender.svg',
-                                  width: 36,
-                                  height: 36,
-                                ),
-                                onPressed: () {
-                                  _selectDate(context);
-                                },
-                                padding: const EdgeInsets.only(right: 10),
+                          // Add validation and error handling (optional)
+                        ),
+                        const SizedBox(height: 10),
+                        const Text("Tanggal:"),
+                        TextFormField(
+                          readOnly: true,
+                          controller: dateController,
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Tidak boleh kosong';
+                            }
+                            return null;
+                          },
+                          showCursor: true,
+                          decoration: InputDecoration(
+                            suffixIcon: IconButton(
+                              splashRadius: 20.0,
+                              icon: SvgPicture.asset(
+                                'assets/svg/calender.svg',
+                                width: 36,
+                                height: 36,
                               ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                                borderSide: const BorderSide(
-                                  color: hijaumuda,
-                                ),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                                borderSide: const BorderSide(
-                                  color: hijaumuda,
-                                ),
-                              ),
-                              hintText: 'Pilih Tanggal',
+                              onPressed: () {
+                                _selectDate(context);
+                              },
+                              padding: const EdgeInsets.only(right: 10),
                             ),
-                          ), // Add spacing for a button
-                          const SizedBox(
-                              height: 20), // Add spacing for a button
-                          ElevatedButton(
-                            onPressed: () {
-                              submit();
-                            },
-                            child: const Text("Submit"),
-                          ), // Optional button
-                        ],
-                      ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: const BorderSide(
+                                color: hijaumuda,
+                              ),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: const BorderSide(
+                                color: hijaumuda,
+                              ),
+                            ),
+                            hintText: 'Pilih Tanggal',
+                          ),
+                        ), // Add spacing for a button
+                        const SizedBox(height: 20), // Add spacing for a button
+                        ElevatedButton(
+                          onPressed: () {
+                            submit();
+                          },
+                          child: const Text("Submit"),
+                        ), // Optional button
+                      ],
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         );
       },
@@ -287,7 +281,7 @@ class _FormAddState extends State<FormAdd> {
       };
 
       // Add new data to array
-      await addController
+      await widget.addController
           .addDataPayment(newData)
           .whenComplete(() => Navigator.pop(context));
       return;
