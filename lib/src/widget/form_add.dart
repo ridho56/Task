@@ -43,69 +43,69 @@ class _FormAddState extends State<FormAdd> {
     ));
     return DraggableScrollableSheet(
       minChildSize: 0.3,
-      maxChildSize: 0.9,
+      maxChildSize: 1.0,
       expand: false,
       builder: (BuildContext context, ScrollController scrollController) {
-        return Container(
-          padding: const EdgeInsets.all(20.0),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(20.0),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Center(
-                child: Container(
-                  margin: const EdgeInsets.only(bottom: 10),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(2),
-                    color: const Color(0xffEBEBEB),
-                  ),
-                  width: 80,
-                  height: 4,
-                ),
-              ),
-              AppBar(
-                elevation: 0,
-                backgroundColor: Colors.white,
-                title: const Text(
-                  "Tambah Item",
-                  style: TextStyle(
-                    color: abuabu,
-                    fontFamily: 'KumbhSans',
-                    fontSize: 21,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ), // More descriptive title
-                leading: GestureDetector(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
+        return SingleChildScrollView(
+          controller: scrollController,
+          child: Container(
+            padding: const EdgeInsets.all(20.0),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20.0),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Center(
                   child: Container(
-                    padding: const EdgeInsets.all(12),
+                    margin: const EdgeInsets.only(bottom: 10),
                     decoration: BoxDecoration(
-                      color: hijaumuda.withOpacity(0.2),
-                      shape: BoxShape.circle,
+                      borderRadius: BorderRadius.circular(2),
+                      color: const Color(0xffEBEBEB),
                     ),
-                    child: Center(
-                      child: SvgPicture.asset(
-                        "assets/svg/Arrow_right.svg",
-                        theme: const SvgTheme(
-                          currentColor: hijaumuda,
+                    width: 80,
+                    height: 4,
+                  ),
+                ),
+                AppBar(
+                  elevation: 0,
+                  backgroundColor: Colors.white,
+                  title: const Text(
+                    "Tambah Item",
+                    style: TextStyle(
+                      color: abuabu,
+                      fontFamily: 'KumbhSans',
+                      fontSize: 21,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ), // More descriptive title
+                  leading: GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: hijaumuda.withOpacity(0.2),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Center(
+                        child: SvgPicture.asset(
+                          "assets/svg/Arrow_right.svg",
+                          theme: const SvgTheme(
+                            currentColor: hijaumuda,
+                          ),
                         ),
                       ),
                     ),
                   ),
+                  centerTitle: true,
                 ),
-                centerTitle: true,
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Expanded(
-                child: SingleChildScrollView(
-                  controller: scrollController,
+                const SizedBox(
+                  height: 20,
+                ),
+                Expanded(
                   child: Form(
                     key: _formKey,
                     // Wrap the content in a Form widget
@@ -245,8 +245,8 @@ class _FormAddState extends State<FormAdd> {
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         );
       },

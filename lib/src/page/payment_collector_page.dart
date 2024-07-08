@@ -179,6 +179,7 @@ class _PaymentCollectorPageState extends State<PaymentCollectorPage> {
                 showModalBottomSheet(
                   context: context,
                   isScrollControlled: true,
+                  useSafeArea: true,
                   backgroundColor: Colors.transparent,
                   builder: (BuildContext context) {
                     return FormAdd(
