@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:task/src/controller/add_controller.dart';
@@ -186,7 +187,13 @@ class _PaymentCollectorPageState extends State<PaymentCollectorPage> {
                       addController: addController,
                     );
                   },
-                );
+                ).then((value) {
+                  SystemChrome.setSystemUIOverlayStyle(
+                      const SystemUiOverlayStyle(
+                    statusBarColor: putih,
+                    statusBarIconBrightness: Brightness.dark,
+                  ));
+                });
               },
               style: TextButton.styleFrom(
                   backgroundColor: hijaumuda,
