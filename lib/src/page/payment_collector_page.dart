@@ -243,7 +243,7 @@ class _PaymentCollectorPageState extends State<PaymentCollectorPage> {
                           context: context,
                           isScrollControlled: true,
                           builder: (BuildContext context) {
-                            return const DetailBottomSheet();
+                            return DetailBottomSheet(data: data);
                           },
                         );
                       },

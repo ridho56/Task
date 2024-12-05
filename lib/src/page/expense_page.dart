@@ -200,7 +200,7 @@ class _ExpensePageState extends State<ExpensePage> {
                   showModalBottomSheet(
                     context: context,
                     builder: (BuildContext context) {
-                      return const DetailBottomSheet();
+                      return const DetailBottomSheet(data: {},);
                     },
                   );
                 },

@@ -3,7 +3,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:task/theme.dart';
 
 class DetailBottomSheet extends StatelessWidget {
-  const DetailBottomSheet({super.key});
+  final Map<String, dynamic> data;
+  const DetailBottomSheet({super.key, required this.data});
+
+  Map<String, dynamic> get getData => data;
 
   @override
   Widget build(BuildContext context) {
@@ -44,11 +47,11 @@ class DetailBottomSheet extends StatelessWidget {
             height: 12,
           ),
           RichText(
-            text: const TextSpan(
+            text: TextSpan(
               children: <TextSpan>[
                 TextSpan(
-                  text: "Paket Data\n",
-                  style: TextStyle(
+                  text: "${data['name']}\n",
+                  style: const TextStyle(
                     color: abuabu,
                     fontFamily: 'KumbhSans',
                     fontSize: 26,
@@ -56,8 +59,8 @@ class DetailBottomSheet extends StatelessWidget {
                   ),
                 ),
                 TextSpan(
-                  text: "19 November 2023",
-                  style: TextStyle(
+                  text: "${data['date']}",
+                  style: const TextStyle(
                     color: abuabu,
                     fontFamily: 'KumbhSans',
                     fontSize: 14,
@@ -79,10 +82,10 @@ class DetailBottomSheet extends StatelessWidget {
               fontWeight: FontWeight.w600,
             ),
           ),
-          const Text(
-            "Lorem ipsum dolor sit amet consectetur. Fames donec quam vitae pharetra consectetur laoreet. Vitae nisl felis habitasse arcu tempus quam. Lectus lectus viverra vestibulum faucibus. Sit pharetra in justo semper magnis. Id ac dolor facilisis urna. Ut lobortis etiam consectetur.",
+          Text(
+            "${data['decription']}",
             textAlign: TextAlign.justify,
-            style: TextStyle(
+            style: const TextStyle(
               color: Colors.black,
               fontFamily: 'KumbhSans',
               fontSize: 13,
